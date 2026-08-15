@@ -7,23 +7,23 @@
     "dev": "astro dev --host 0.0.0.0",
     "build": "astro build",
     "preview": "astro preview --host 0.0.0.0",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint src --ext .ts,.astro,.js  || true",
+    "typecheck": "astro check",
+    "lint": "astro check",
     "test": "vitest run --reporter=verbose",
     "test:e2e": "playwright test",
     "validate:content": "node scripts/validate-content.mjs",
-    "check:links": "node scripts/check-links.mjs"
+    "check:links": "node scripts/check-links.mjs",
+    "verify": "npm run typecheck && npm run validate:content && npm test && npm run build && npm run check:links"
   },
-  "dependencies": {},
   "devDependencies": {
-    "astro": "^4.15.0",
-    "@astrojs/sitemap": "^3.2.0",
-    "typescript": "^5.5.0",
-    "vitest": "^2.0.0",
-    "@playwright/test": "^1.46.0"
+    "@astrojs/check": "^0.9.10",
+    "@playwright/test": "^1.62.1",
+    "astro": "^7.2.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
   },
   "packageManager": "npm@10.9.0",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.12.0"
   }
 }

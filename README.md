@@ -2,13 +2,14 @@
 
 Production URL (fallback): https://beautyvibe1.github.io/ARENA.AI/
 
-Stack: Astro 4 + TypeScript strict + static output + minimal client islands. Static HTML для каталога и 13 товарных страниц, progressive enhancement.
+Stack: Astro 7 + TypeScript strict + static output + minimal client islands. Требуется Node.js ≥22.12. Static HTML для каталога и 13 товарных страниц, progressive enhancement.
 
 ## Быстрый старт
 
 ```bash
 npm ci
 npm run dev      # http://localhost:4321/ARENA.AI/
+npm run verify   # типы, контент, unit-тесты, build и внутренние ссылки
 npm run build
 npm run preview
 ```
@@ -52,15 +53,15 @@ Dev server слушает 0.0.0.0 для preview в Arena.
 
 ## CI/CD
 
-- `.github/workflows/ci.yml` — install, typecheck, validate-content, build, check-links.
-- `.github/workflows/pages.yml` — deploy via GitHub Pages artifact.
-- GitHub Pages source = GitHub Actions (если права позволяют, настроить через gh, иначе ручной шаг в настройках repo: Settings → Pages → Source: GitHub Actions).
+- `.github/workflows/ci.yml` — типы, проверка контента, unit-тесты, production build, ссылки и Playwright smoke-тесты.
+- `.github/workflows/pages.yml` — повторная верификация и deploy подписанного GitHub Pages artifact после push в `main`.
+- GitHub Pages настроен на GitHub Actions, HTTPS включён.
 
 ## Контент-обновление
 
 1. Обновить `src/data/products.ts` (цену, объём, officialUrl) и `lastVerified`.
 2. Добавить/заменить WebP в `public/images/products/` с тем же именем, оптимизировать (≤100 КБ на файл).
-3. `npm run validate:content && npm run build && npm run check:links`
+3. `npm run verify`
 
 ## Deployment
 

@@ -184,6 +184,11 @@ small { font-size: var(--text-sm); }
   }
   .mobile-toggle { display: inline-flex; align-items: center; justify-content: center; }
 }
+@media (max-width: 640px) {
+  .nav__actions > a { display: none; }
+  .logo { font-size: 18px; }
+  main [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+}
 
 .hero {
   background: radial-gradient(120% 120% at 20% 10%, #2a1720 0%, var(--color-espresso) 55%, #120a0a 100%);
