@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { verifiedReviews, avitoMetrics } from "../../data/reviews";
+import { canonicalUrl } from "../../lib/seo";
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="Отзывы — только проверенные цитаты и Avito" description="Отзывы Beauty Supply: только проверенные цитаты из Avito и ссылка на официальный профиль. Рейтинг 5,0 по 33 отзывам, на рынке с ноября 2011." canonical={canonicalUrl("/reviews/")}>
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="breadcrumbs"><a href={base}>Главная</a> / <span>Отзывы</span></div>
+      <h1 style="margin-top:16px;">Отзывы и доверие</h1>
+      <p style="color:#6b5a56;">Мы публикуем только проверяемые факты. Ниже — метрики из официального профиля Avito и две beauty-релевантные цитаты, явно указанные в CONTEXT-AVITO (2).MD как реальные.</p>
+
+      <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin:24px 0;">
+        <div style="background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:16px; text-align:center;"><div style="font-size:28px; font-weight:700;">{avitoMetrics.rating}</div><div style="font-size:12px; color:#6b5a56;">рейтинг на Avito</div></div>
+        <div style="background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:16px; text-align:center;"><div style="font-size:28px; font-weight:700;">{avitoMetrics.reviewsCount}</div><div style="font-size:12px; color:#6b5a56;">отзывов на Avito</div></div>
+        <div style="background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:16px; text-align:center;"><div style="font-size:18px; font-weight:700;">{avitoMetrics.since}</div><div style="font-size:12px; color:#6b5a56;">на рынке</div></div>
+      </div>
+
+      <p style="font-size:12px; color:#9a8b88;">Источник: {avitoMetrics.profileUrl} • {avitoMetrics.note}</p>
+
+      <h2 style="margin-top:32px;">Проверенные цитаты</h2>
+      <div style="display:grid; gap:12px; margin-top:12px;">
+        {verifiedReviews.map(r => (
+          <blockquote style="background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:16px;">
+            <div style="font-size:16px;">“{r.text}”</div>
+            <div style="font-size:12px; color:#6b5a56; margin-top:8px;">— {r.author}, {r.date}, товар: {r.product}, источник: {r.source} • verified {String(r.verified)}</div>
+          </blockquote>
+        ))}
+      </div>
+
+      <div style="background:var(--color-ivory); border:1px solid var(--color-border); border-radius:12px; padding:16px; margin-top:24px;">
+        <strong>Почему только 2 цитаты?</strong>
+        <p style="font-size:14px; color:#6b5a56; margin:8px 0 0;">В предыдущих версиях сайта использовались три длинные цитаты «Юля/Анастасия/Елена» без сверки с Avito-профилем. Мы не публикуем неподтверждённые attributed reviews. В CONTEXT-AVITO (2).MD явно приведены только две цитаты выше как реальные beauty-релевантные. Если вы хотите добавить больше проверенных отзывов — предоставьте скриншоты/ссылки, и мы включим их с источником.</p>
+      </div>
+
+      <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap;">
+        <a href={avitoMetrics.profileUrl} target="_blank" rel="noopener noreferrer" class="btn btn--primary">Открыть Avito профиль</a>
+        <a href={`${base}catalog/`} class="btn btn--secondary">К каталогу</a>
+      </div>
+
+      <h2 style="margin-top:40px;">120+ отзывов на площадках</h2>
+      <p style="color:#6b5a56;">Упоминание «120+ отзывов на площадках» встречается в материалах проекта. Мы используем его как общее упоминание, не как верифицированный AggregatedRating в schema, пока нет документального подтверждения распределения по площадкам.</p>
+    </div>
+  </section>
+</BaseLayout>

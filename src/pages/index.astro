@@ -1,0 +1,226 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { products } from "../data/products";
+import { siteConfig } from "../data/site";
+import { verifiedReviews } from "../data/reviews";
+import { faq } from "../data/faq";
+import ProductCard from "../components/catalog/ProductCard.astro";
+import BeautyQuiz from "../components/interactive/BeautyQuiz.astro";
+import { canonicalUrl } from "../lib/seo";
+
+const base = import.meta.env.BASE_URL;
+const featured = products;
+---
+<BaseLayout title="Недоступное — теперь ваше" description={siteConfig.description} canonical={canonicalUrl("/")}>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero__grid">
+      <div>
+        <div class="badge" style="background: rgba(255,255,255,0.1); color:#f2d6cc; border-color: rgba(255,255,255,0.18); margin-bottom: 16px;">USA → RUSSIA · curated edit · {products.length} позиций</div>
+        <h1>Недоступное — <em>теперь ваше.</em></h1>
+        <p class="hero__copy">Культовый уход и макияж из США. Проверяем каждый товар, подбираем как beauty-консьерж и доставляем в любой город России. Без корзины-ловушки — финальную цену и наличие подтверждает менеджер в Telegram.</p>
+        <div class="hero__ctas">
+          <a href={`${base}catalog/`} class="btn btn--ghost">Смотреть {products.length} товаров</a>
+          <a href="#quiz" class="btn btn--secondary" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color:#fff;">Бесплатный подбор</a>
+        </div>
+        <div style="display:flex; gap:24px; margin-top:32px; flex-wrap:wrap;">
+          <div><strong style="font-size:24px;">5,0</strong> <span style="color:#f2d6cc;">★★★★★</span><div style="font-size:12px; color:#d9c9c2;">рейтинг на Avito · 33 отзыва</div></div>
+          <div><strong style="font-size:24px;">{siteConfig.trust.since}</strong><div style="font-size:12px; color:#d9c9c2;">на рынке</div></div>
+          <div><strong style="font-size:24px;">120+</strong><div style="font-size:12px; color:#d9c9c2;">отзывов на площадках</div></div>
+        </div>
+      </div>
+      <div class="hero__visual">
+        <img src={`${base}images/products/pillow-talk.webp`} alt="Charlotte Tilbury Pillow Talk — герой-кадр" width="600" height="750" fetchpriority="high" />
+        <div style="position:absolute; bottom:16px; left:16px; background:#fff; border-radius:12px; padding:10px 14px; box-shadow:0 4px 16px rgba(0,0,0,0.2);">
+          <div style="font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#9a8b88;">Iconic makeup</div>
+          <div style="font-family:var(--font-display); font-weight:600;">Pillow Talk</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust strip -->
+  <div class="container">
+    <div class="trust-strip">
+      <div class="trust-strip__item">
+        <span>✦</span>
+        <div><strong>Оригинальная продукция</strong><span>Проверка маркировки и batch-кода</span></div>
+      </div>
+      <div class="trust-strip__item">
+        <span>✦</span>
+        <div><strong>По всей России</strong><span>Москва · СДЭК · Avito Доставка</span></div>
+      </div>
+      <div class="trust-strip__item">
+        <span>✦</span>
+        <div><strong>Экспертный подбор</strong><span>Под задачу, кожу и бюджет</span></div>
+      </div>
+      <div class="trust-strip__item">
+        <span>✦</span>
+        <div><strong>Надёжный продавец</strong><span>Подтверждённый профиль Avito 5,0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brands -->
+  <section class="section">
+    <div class="container">
+      <div class="section__header">
+        <div class="badge">The curated edit</div>
+        <h2>Три бренда. <em style="font-style:italic; font-weight:400; color:var(--color-wine);">Только культовые формулы.</em></h2>
+        <p>Не бесконечная витрина, а точный выбор средств, к которым возвращаются. В наличии — {products.length} позиций Image Skincare, Charlotte Tilbury и Hourglass.</p>
+      </div>
+      <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:16px;">
+        <div style="background:#fff; border:1px solid var(--color-border); border-radius:16px; padding:24px;">
+          <div style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#9a8b88;">01 / Clinical skincare</div>
+          <h3 style="margin-top:8px;">IMAGE<br/>SKINCARE</h3>
+          <p style="font-size:14px; color:#6b5a56;">Профессиональный уход из Флориды: SPF, ретинол, vitamin C и технологии для плотности кожи.</p>
+          <a href={`${base}catalog/?brand=IMAGE%20Skincare`} class="btn btn--secondary" style="margin-top:12px;">Смотреть уход</a>
+        </div>
+        <div style="background: var(--color-ivory); border:1px solid var(--color-border); border-radius:16px; padding:24px;">
+          <div style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#9a8b88;">02 / Makeup artistry</div>
+          <h3 style="margin-top:8px;">CHARLOTTE<br/>TILBURY</h3>
+          <p style="font-size:14px; color:#6b5a56;">Hollywood glow, rose-gold упаковка и оттенки Pillow Talk. Товары привезены из США.</p>
+          <a href={`${base}catalog/?brand=Charlotte%20Tilbury`} class="btn btn--secondary" style="margin-top:12px;">Смотреть макияж</a>
+        </div>
+        <div style="background:#fff; border:1px solid var(--color-border); border-radius:16px; padding:24px;">
+          <div style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#9a8b88;">03 / Modern luxury</div>
+          <h3 style="margin-top:8px;">HOURGLASS</h3>
+          <p style="font-size:14px; color:#6b5a56;">Светорассеивающие текстуры, роскошный финиш и cruelty-free философия.</p>
+          <a href={`${base}catalog/?brand=Hourglass`} class="btn btn--secondary" style="margin-top:12px;">Смотреть Hourglass</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catalog preview -->
+  <section class="section section--alt" id="catalog">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:end; gap:16px; flex-wrap:wrap; margin-bottom:24px;">
+        <div>
+          <div class="badge">В наличии · {products.length} позиций · snapshot 14.08.2026</div>
+          <h2>Выберите свой <em style="font-style:italic; font-weight:400;">beauty-ритуал.</em></h2>
+        </div>
+        <a href={`${base}catalog/`} class="btn btn--secondary">Полный каталог →</a>
+      </div>
+      <div class="product-grid">
+        {featured.map(p => <ProductCard product={p} />)}
+      </div>
+      <div style="margin-top:20px; background:#fff; border:1px dashed var(--color-border-strong); border-radius:12px; padding:16px; text-align:center;">
+        <strong>Не нашли нужный продукт?</strong> Привезём под заказ любой beauty-товар из США — пришлите ссылку менеджеру.
+        <a href={siteConfig.contacts.telegramBot + "?start=preorder_usa"} target="_blank" rel="noopener noreferrer" class="btn btn--secondary" style="margin-left:12px;">Рассчитать предзаказ</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Concierge -->
+  <section class="section" id="quiz">
+    <div class="container" style="display:grid; grid-template-columns: 1fr 1fr; gap:32px; align-items:start;">
+      <div>
+        <div class="badge">Beauty-консьерж, а не маркетплейс</div>
+        <h2>Уход должен <em style="font-style:italic; font-weight:400;">работать вместе.</em></h2>
+        <p style="color:#6b5a56;">Ретинол, витамин C и SPF дают больше — если правильно встроить их в рутину. Мы не просто отправляем коробку: помогаем выбрать схему, частоту и сочетания.</p>
+        <ol style="list-style:none; padding:0; margin: 20px 0; display:grid; gap:12px;">
+          <li style="display:flex; gap:12px;"><span style="font-family:var(--font-display); font-weight:700; color:var(--color-wine);">01</span><div><strong>Разбираем задачу</strong><br/><span style="font-size:14px; color:#6b5a56;">Тип кожи, текущий уход, чувствительность и желаемый результат.</span></div></li>
+          <li style="display:flex; gap:12px;"><span style="font-family:var(--font-display); font-weight:700; color:var(--color-wine);">02</span><div><strong>Проверяем совместимость</strong><br/><span style="font-size:14px; color:#6b5a56;">Убираем дубли активов и предупреждаем о постепенном введении ретинола.</span></div></li>
+          <li style="display:flex; gap:12px;"><span style="font-family:var(--font-display); font-weight:700; color:var(--color-wine);">03</span><div><strong>Собираем точный выбор</strong><br/><span style="font-size:14px; color:#6b5a56;">2–3 варианта под бюджет — без навязывания лишних банок.</span></div></li>
+        </ol>
+      </div>
+      <BeautyQuiz />
+    </div>
+  </section>
+
+  <!-- Authenticity -->
+  <section class="section section--alt">
+    <div class="container">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+        <div>
+          <div class="badge">Trust, verified 5.0 ★★★★★</div>
+          <h2>Проверка до того, <em style="font-style:italic; font-weight:400;">как вы оплатите.</em></h2>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:20px;">
+            <div style="background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:16px;"><strong>01 Источник</strong><p style="font-size:13px; color:#6b5a56; margin:6px 0 0;">Проверенные магазины и поставщики в США.</p></div>
+            <div style="background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:16px;"><strong>02 Маркировка</strong><p style="font-size:13px; color:#6b5a56; margin:6px 0 0;">Сверяем упаковку, объём, штрихкод и batch-код.</p></div>
+            <div style="background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:16px;"><strong>03 Фото товара</strong><p style="font-size:13px; color:#6b5a56; margin:6px 0 0;">По запросу покажем конкретный экземпляр до отправки.</p></div>
+            <div style="background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:16px;"><strong>04 Безопасная сделка</strong><p style="font-size:13px; color:#6b5a56; margin:6px 0 0;">Доступно оформление через Avito профиль.</p></div>
+          </div>
+        </div>
+        <div style="background: var(--color-espresso); color:#fff; border-radius:20px; padding:28px;">
+          <h3 style="color:#fff;">Рейтинг официального профиля</h3>
+          <p style="color:#d9c9c2;">Beauty Supply на Avito — 5,0 по 33 отзывам (проверено 14.08.2026). 14+ лет на рынке с ноября 2011, 120+ отзывов на площадках.</p>
+          <a href={siteConfig.contacts.avitoProfile} target="_blank" rel="noopener noreferrer" class="btn btn--ghost" style="margin-top:12px;">Открыть профиль продавца</a>
+          <div style="margin-top:24px; border-top:1px solid rgba(255,255,255,0.15); padding-top:16px;">
+            <div style="font-size:12px; color:#b8a9a6;">Проверенные цитаты (только beauty-релевантные из CONTEXT-AVITO):</div>
+            {verifiedReviews.map(r => (
+              <blockquote style="margin:12px 0; padding:12px; background: rgba(255,255,255,0.06); border-radius:10px; font-size:14px;">
+                “{r.text}”<br/><span style="font-size:12px; color:#b8a9a6;">— {r.author}, {r.date}, {r.product}</span>
+              </blockquote>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Delivery steps -->
+  <section class="section">
+    <div class="container">
+      <h2>Быстро. Бережно. <em style="font-style:italic; font-weight:400;">По всей России.</em></h2>
+      <div style="display:grid; grid-template-columns: repeat(4,1fr); gap:16px; margin-top:24px;">
+        <div><div style="font-family:var(--font-display); font-size:48px; color:var(--color-blush);">01</div><strong>Вы выбираете</strong><p style="font-size:14px; color:#6b5a56;">Товар из каталога или персональный подбор.</p></div>
+        <div><div style="font-family:var(--font-display); font-size:48px; color:var(--color-blush);">02</div><strong>Мы подтверждаем</strong><p style="font-size:14px; color:#6b5a56;">Наличие, свежесть партии, цену и способ оплаты.</p></div>
+        <div><div style="font-family:var(--font-display); font-size:48px; color:var(--color-blush);">03</div><strong>Отправляем</strong><p style="font-size:14px; color:#6b5a56;">Курьером по Москве, СДЭК или Avito Доставкой.</p></div>
+        <div><div style="font-family:var(--font-display); font-size:48px; color:var(--color-blush);">04</div><strong>Вы распаковываете</strong><p style="font-size:14px; color:#6b5a56;">Премиальная упаковка и поддержка после покупки.</p></div>
+      </div>
+      <div style="margin-top:16px; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:#9a8b88; text-align:center;">Москва · Санкт-Петербург · Казань · Сочи · Екатеринбург · Новосибирск · Вся Россия</div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section--alt">
+    <div class="container container--narrow">
+      <h2>Важное <em style="font-style:italic; font-weight:400;">до заказа.</em></h2>
+      <div class="faq" style="margin-top:20px;">
+        {faq.map(item => (
+          <details>
+            <summary>{item.q}</summary>
+            <p style="margin-top:12px; color:#6b5a56; font-size:15px;">{item.a}</p>
+          </details>
+        ))}
+      </div>
+      <div style="text-align:center; margin-top:24px;">
+        <a href={siteConfig.contacts.telegramBot + "?start=question"} target="_blank" rel="noopener noreferrer" class="btn btn--primary">Задать вопрос в Telegram</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section" style="background: var(--color-espresso); color:#fff;">
+    <div class="container" style="text-align:center;">
+      <h2 style="color:#fff;">Ваш персональный <em style="font-style:italic; font-weight:400; color:var(--color-blush);">beauty edit</em> из США</h2>
+      <p style="color:#d9c9c2; max-width:56ch; margin: 12px auto 24px;">13 проверенных позиций в наличии. Для всего остального — предзаказ и подбор без навязывания.</p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a href={`${base}catalog/`} class="btn btn--ghost">Открыть каталог</a>
+        <a href={`${base}preorder/`} class="btn btn--secondary" style="background:#fff; color:var(--color-espresso);">Предзаказ из США</a>
+      </div>
+      <p style="margin-top:16px; font-size:12px; color:#b8a9a6;">Финальную цену и наличие подтверждает менеджер. Snapshot 14.08.2026.</p>
+    </div>
+  </section>
+
+  <script is:inline>
+    // lightweight favorite support: store only slugs
+    (function(){
+      try {
+        const key='bs_fav';
+        function getFavs(){ try { return JSON.parse(localStorage.getItem(key)||'[]'); } catch { return []; } }
+        function saveFavs(arr){ try { localStorage.setItem(key, JSON.stringify(arr.slice(0,100))); } catch {} }
+        window.bsToggleFav = function(slug){
+          const favs=getFavs();
+          const idx=favs.indexOf(slug);
+          if (idx>=0) favs.splice(idx,1); else favs.push(slug);
+          saveFavs(favs);
+          document.dispatchEvent(new CustomEvent('favs-change', {detail:favs}));
+        };
+        window.bsGetFavs = getFavs;
+      } catch {}
+    })();
+  </script>
+</BaseLayout>

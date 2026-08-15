@@ -1,0 +1,161 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { products, getProductBySlug } from "../../data/products";
+import { siteConfig } from "../../data/site";
+import { buildProductLink, slugToTelegramToken, fallbackInstruction } from "../../lib/telegram";
+import { canonicalUrl } from "../../lib/seo";
+
+export async function getStaticPaths() {
+  return products.map(p => ({ params: { slug: p.slug }, props: { product: p } }));
+}
+
+const { product } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const canonical = canonicalUrl(`/products/${product.slug}/`);
+const telegramToken = slugToTelegramToken(product.slug);
+const telegramUrl = buildProductLink(product.slug);
+const related = products.filter(p => p.slug !== product.slug && (p.brand === product.brand || p.category === product.category)).slice(0,3);
+
+const title = `${product.russianName} — ${product.brand} ${product.volume}`;
+const description = `${product.shortDescription} Объём: ${product.volume}. Цена snapshot ${product.price.toLocaleString("ru-RU")} ₽ — финальную цену и наличие подтверждает менеджер.`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": `${product.brand} ${product.originalName}`,
+  "alternateName": product.russianName,
+  "brand": { "@type": "Brand", "name": product.brand },
+  "description": product.fullDescription,
+  "sku": product.slug,
+  "image": canonicalUrl(`/images/products/${product.image}`),
+  "offers": {
+    "@type": "Offer",
+    "price": product.price,
+    "priceCurrency": "RUB",
+    "availability": "https://schema.org/PreOrder",
+    "url": canonical,
+    "priceValidUntil": "2026-09-14"
+  }
+};
+---
+
+<BaseLayout title={title} description={description} canonical={canonical}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+  </Fragment>
+
+  <section class="section">
+    <div class="container">
+      <div class="breadcrumbs">
+        <a href={base}>Главная</a> / <a href={`${base}catalog/`}>Каталог</a> / <span>{product.russianName}</span>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap:32px; margin-top:24px; align-items:start;">
+        <div>
+          <div style="background:#fff; border:1px solid var(--color-border); border-radius:20px; padding:16px; aspect-ratio:1; display:flex; align-items:center; justify-content:center;">
+            <img src={`${base}images/products/${product.image}`} alt={`${product.brand} ${product.originalName} ${product.volume}`} width="600" height="600" style="object-fit:contain; width:100%; height:100%;" />
+          </div>
+          <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
+            <span class="badge">{product.category}</span>
+            {product.goals.map(g => <span class="badge" style="background:var(--color-ivory);">{g}</span>)}
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#9a8b88;">{product.brand}{product.brandLine ? ` • ${product.brandLine}` : ""}</div>
+          <h1 style="font-size: clamp(28px,4vw,36px); margin-top:8px;">{product.russianName}</h1>
+          <div style="color:#6b5a56; font-size:14px; margin-bottom:8px;">{product.originalName} • {product.volume}</div>
+
+          <div style="display:flex; align-items:baseline; gap:12px; margin:16px 0;">
+            <div style="font-size:26px; font-weight:700;">{product.price.toLocaleString("ru-RU")} ₽</div>
+            <div style="font-size:12px; color:#9a8b88;">snapshot 14.08.2026</div>
+          </div>
+          <div style="background:var(--color-ivory); border:1px solid var(--color-border); border-radius:10px; padding:10px 12px; font-size:13px; color:#6b5a56;">
+            Финальную цену и наличие подтверждает менеджер в Telegram. «Наличие уточняется» — остатки меняются.
+          </div>
+
+          <p style="margin-top:16px; font-size:16px;">{product.shortDescription}</p>
+
+          <div style="display:flex; gap:12px; margin-top:20px; flex-wrap:wrap;">
+            <a href={telegramUrl} target="_blank" rel="noopener noreferrer" class="btn btn--primary" style="flex:1;">Заказать в Telegram — {telegramToken}</a>
+            <button class="btn btn--secondary" id="fav-btn" type="button">♡ В избранное</button>
+          </div>
+          <p style="font-size:12px; color:#9a8b88; margin-top:8px;">CTA работает без JS как обычная ссылка. {fallbackInstruction}</p>
+
+          <div style="margin-top:24px; display:grid; gap:16px;">
+            <div>
+              <h3 style="font-size:18px;">Описание</h3>
+              <p style="color:#6b5a56; font-size:15px;">{product.fullDescription}</p>
+            </div>
+            <div>
+              <h3 style="font-size:18px;">Преимущества</h3>
+              <ul style="margin:8px 0; padding-left:18px; color:#6b5a56; font-size:14px;">
+                {product.benefits.map(b => <li>{b}</li>)}
+              </ul>
+            </div>
+            <div>
+              <h3 style="font-size:18px;">Способ применения</h3>
+              <p style="color:#6b5a56; font-size:14px;">{product.howToUse}</p>
+            </div>
+            {product.cautions && (
+              <div style="background:#fff8f5; border:1px solid #f2d6cc; border-radius:10px; padding:12px;">
+                <strong style="font-size:13px;">Важные замечания</strong>
+                <p style="font-size:13px; color:#6b5a56; margin:6px 0 0;">{product.cautions}</p>
+              </div>
+            )}
+          </div>
+
+          <div style="margin-top:24px; border-top:1px solid var(--color-border); padding-top:16px; display:grid; gap:8px;">
+            <div style="font-size:13px;"><strong>Проверка оригинальности:</strong> сверяем упаковку, объём, штрих-код и batch-код. По запросу фото конкретного экземпляра.</div>
+            <div style="font-size:13px;"><strong>Доставка:</strong> Москва курьером, регионы — СДЭК / Avito Доставка. Обычно до 1 рабочего дня после подтверждения.</div>
+            <div style="font-size:12px; color:#9a8b88;">Источник данных товара: <a href={product.officialUrl} target="_blank" rel="noopener noreferrer" style="text-decoration:underline;">официальная страница {product.brand}</a> • lastVerified {product.lastVerified}</div>
+          </div>
+        </div>
+      </div>
+
+      {related.length > 0 && (
+        <div style="margin-top:48px;">
+          <h2>Похожие товары</h2>
+          <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:16px; margin-top:16px;">
+            {related.map(r => (
+              <a href={`${base}products/${r.slug}/`} style="background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:12px; display:flex; gap:12px; align-items:center;">
+                <img src={`${base}images/products/${r.image}`} alt={r.russianName} width="72" height="72" style="object-fit:contain; background:var(--color-ivory); border-radius:8px;" />
+                <div>
+                  <div style="font-size:11px; color:#9a8b88; text-transform:uppercase;">{r.brand}</div>
+                  <div style="font-weight:600; font-size:14px;">{r.russianName}</div>
+                  <div style="font-size:12px; color:#6b5a56;">{r.volume} • {r.price.toLocaleString("ru-RU")} ₽</div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <script define:vars={{ slug: product.slug }}>
+    // favorite button + tracking
+    (function(){
+      const btn = document.getElementById('fav-btn');
+      const key='bs_fav';
+      function getFavs(){ try { return JSON.parse(localStorage.getItem(key)||'[]'); } catch { return []; } }
+      function saveFavs(a){ try { localStorage.setItem(key, JSON.stringify(a.slice(0,100))); } catch {} }
+      function updateBtn(){
+        const favs=getFavs();
+        const isFav=favs.includes(slug);
+        if (btn) btn.textContent = isFav ? '♥ В избранном' : '♡ В избранное';
+      }
+      if (btn) {
+        btn.addEventListener('click', () => {
+          const favs=getFavs();
+          const idx=favs.indexOf(slug);
+          if (idx>=0) favs.splice(idx,1); else favs.push(slug);
+          saveFavs(favs);
+          updateBtn();
+        });
+        updateBtn();
+      }
+      try { console.debug('[product_view]', slug); } catch {}
+    })();
+  </script>
+</BaseLayout>

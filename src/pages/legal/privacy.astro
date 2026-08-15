@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { canonicalUrl } from "../../lib/seo";
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="Политика конфиденциальности" description="Честная privacy policy Beauty Supply: сайт статичен, не собирает PII, переход в Telegram и Avito — внешние сервисы со своей политикой." canonical={canonicalUrl("/legal/privacy/")}>
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="breadcrumbs"><a href={base}>Главная</a> / <span>Privacy Policy</span></div>
+      <h1 style="margin-top:16px;">Политика конфиденциальности</h1>
+      <p style="font-size:12px; color:#9a8b88;">Дата последнего обновления: 14.08.2026 • snapshot</p>
+
+      <div class="prose" style="margin-top:20px;">
+        <h2>Кто мы</h2>
+        <p>Beauty Supply — московский premium beauty-магазин/каталог оригинальной косметики, привозимой из США. Сайт https://beautyvibe1.github.io/ARENA.AI/ — статически генерируемый каталог, без собственного backend, корзины и эквайринга.</p>
+
+        <h2>Какие данные мы собираем на сайте</h2>
+        <ul>
+          <li><strong>Не собираем</strong> имя, телефон, email, адрес на сайте. Формы с PII отсутствуют.</li>
+          <li><strong>Локально</strong> можем хранить только slug избранного (например, «image-vital-c...») в localStorage, без персональных данных. При недоступности localStorage — корректно деградируем.</li>
+          <li><strong>Не используем</strong> cookie для non-essential tracking до получения реального counter ID и privacy decision. Поэтому отдельного cookie-banner нет.</li>
+        </ul>
+
+        <h2>Аналитика — подготовлена, но не подключена</h2>
+        <p>В коде предусмотрен лёгкий analytics adapter с событиями: catalog_filter, product_view, product_order_click, quiz_start, quiz_complete, avito_click. Отправка данных не происходит, пока не получен и не задокументирован ID счётчика и privacy решение.</p>
+
+        <h2>Переходы во внешние сервисы</h2>
+        <p>Основные действия уводят на внешние платформы:</p>
+        <ul>
+          <li><strong>Telegram bot</strong> (https://t.me/BEAUTYSUPPLYMSKBOT) — при переходе вы используете Telegram, который обрабатывает данные по своей <a href="https://telegram.org/privacy" target="_blank" rel="noopener noreferrer">политике конфиденциальности</a>. Мы не получаем телефон автоматически — диалог ведётся внутри Telegram, где ваша личность уже известна мессенджеру.</li>
+          <li><strong>Telegram channel</strong> — аналогично политика Telegram.</li>
+          <li><strong>Avito</strong> — при переходе на профиль действует <a href="https://www.avito.ru/info/personal_data" target="_blank" rel="noopener noreferrer">политика Avito</a>.</li>
+        </ul>
+        <p>Открытие Telegram — это handoff, а не «заявка отправлена». Мы не показываем успешную отправку, если данные фактически никуда не отправились.</p>
+
+        <h2>Квиз</h2>
+        <p>Мини-диагностика собирает только безопасные предпочтения (задача + бюджет + опционально товар) и формирует compact start-payload для бота, например <code>quiz_lifting_mid</code>. PII не сохраняется в localStorage, не передаётся в URL как телефон/email.</p>
+
+        <h2>Ваши права</h2>
+        <p>Вы можете очистить localStorage в настройках браузера. При обращении в Telegram — вы управляете данными внутри мессенджера.</p>
+
+        <h2>Контакты по privacy</h2>
+        <p>Основной канал — Telegram-бот. Email support@beauty-supply.shop пока не подтверждён как рабочий — см. CONTENT_VERIFICATION.md.</p>
+
+        <h2>Изменения</h2>
+        <p>Мы обновим эту политику при появлении реальных юридических реквизитов, email или подключении аналитики. История изменений будет вестись в репозитории.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

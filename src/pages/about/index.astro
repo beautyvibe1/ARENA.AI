@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { siteConfig } from "../../data/site";
+import { canonicalUrl } from "../../lib/seo";
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="О Beauty Supply — подход и история" description="Beauty Supply — кураторский premium beauty-магазин из Москвы. С ноября 2011 на рынке, проверка оригинальности, персональный подбор и доставка по России." canonical={canonicalUrl("/about/")}>
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="breadcrumbs"><a href={base}>Главная</a> / <span>О нас</span></div>
+      <h1 style="margin-top:16px;">О Beauty Supply</h1>
+      <p class="prose" style="font-size:18px; color:#231a18;">Beauty Supply — московский premium beauty-магазин/каталог оригинальной косметики, привезённой из США. Мы не маркетплейс и не огромный склад — мы делаем ставку на точечный выбор, проверку каждого товара и персональный beauty-консьерж.</p>
+
+      <div class="prose">
+        <h2>Позиционирование</h2>
+        <p><strong>«Недоступное — теперь ваше»</strong> — curated edit из США, который сложно найти в обычной российской рознице. Три фокуса: IMAGE Skincare / IMAGE MD (клинический уход, SPF, ретинол, витамин C), Charlotte Tilbury (культовый макияж) и Hourglass (современный люкс, светорассеивающие текстуры).</p>
+
+        <h2>Что нас отличает</h2>
+        <ul>
+          <li><strong>Оригинальность.</strong> Закупки у проверенных ретейлеров и поставщиков в США, сверка упаковки, объёма, штрих-кода и batch-кода. По запросу — фото конкретного экземпляра до отправки.</li>
+          <li><strong>Экспертиза.</strong> Подбор под задачу, тип кожи, текущие активы и бюджет — без навязывания лишних банок. Ретинол вводим постепенно, SPF — обязательно.</li>
+          <li><strong>Честный handoff.</strong> На сайте нет фиктивной корзины. Финальные наличие, цена, оплата и доставка подтверждаются менеджером в официальном Telegram-боте.</li>
+          <li><strong>Доверие.</strong> По данным профиля Avito: рейтинг 5,0 по 33 отзывам, на рынке с ноября 2011 года, статус «Надёжный продавец». Дата проверки: {siteConfig.trust.verifiedDate}. Всего 120+ отзывов на площадках — упоминание из материалов проекта.</li>
+        </ul>
+
+        <h2>Не обещаем то, что не можем подтвердить</h2>
+        <p>Мы не публикуем «официальный дилер/представитель» без документов, не заявляем «авторизованные дистрибьюторы», «температурная упаковка», «ответ за 1 минуту» и не называем Charlotte Tilbury американским брендом. Корректно: товары привезены из США.</p>
+
+        <h2>Как мы работаем</h2>
+        <ol>
+          <li>Вы выбираете товар или проходите мини-диагностику.</li>
+          <li>Менеджер в Telegram подтверждает наличие, свежесть партии, итоговую цену и способ оплаты/доставки.</li>
+          <li>Отправляем курьером по Москве, через СДЭК или Avito Доставку.</li>
+          <li>Остаёмся на связи после покупки.</li>
+        </ol>
+
+        <h2>Каналы</h2>
+        <ul>
+          <li>Telegram-бот: <a href={siteConfig.contacts.telegramBot} target="_blank" rel="noopener noreferrer">{siteConfig.contacts.telegramBot}</a></li>
+          <li>Telegram-канал: <a href={siteConfig.contacts.telegramChannel} target="_blank" rel="noopener noreferrer">{siteConfig.contacts.telegramChannel}</a></li>
+          <li>Avito: <a href={siteConfig.contacts.avitoProfile} target="_blank" rel="noopener noreferrer">{siteConfig.contacts.avitoProfile}</a></li>
+          <li>Instagram: {siteConfig.contacts.instagram} — ссылка из источников, требует проверки принадлежности.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+import type { Product } from "../../data/products";
+import { buildProductLink } from "../../lib/telegram";
+
+interface Props {
+  product: Product;
+}
+const { product } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const productUrl = `${base}products/${product.slug}/`;
+const telegramUrl = buildProductLink(product.slug);
+---
+<article class="card" data-brand={product.brand} data-category={product.category} data-goals={product.goals.join(",")}>
+  <a href={productUrl} class="card__media" aria-label={`Подробнее о ${product.russianName}`}>
+    <img
+      src={`${base}images/products/${product.image}`}
+      alt={`${product.brand} ${product.originalName} ${product.volume}`}
+      loading="lazy"
+      width="400"
+      height="400"
+    />
+  </a>
+  <div class="card__body">
+    <div class="card__brand">{product.brand}{product.brandLine ? ` • ${product.brandLine}` : ""}</div>
+    <a href={productUrl} class="card__title">{product.russianName}</a>
+    <div style="font-size:13px; color:#6b5a56;">{product.originalName} • {product.volume}</div>
+    <div class="card__meta">
+      <span class="badge">наличие уточняется</span>
+      <span>{product.goals.slice(0,2).join(" • ")}</span>
+    </div>
+    <div class="card__price">{product.price.toLocaleString("ru-RU")} ₽
+      <span style="font-weight:400; font-size:12px; color:#9a8b88; margin-left:6px;">snapshot</span>
+    </div>
+    <div class="card__actions">
+      <a href={productUrl} class="btn btn--secondary">Подробнее</a>
+      <a href={telegramUrl} class="btn btn--primary" target="_blank" rel="noopener noreferrer" data-telegram-order={product.slug}>Заказать</a>
+    </div>
+  </div>
+</article>

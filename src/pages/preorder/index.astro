@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { canonicalUrl } from "../../lib/seo";
+import { siteConfig } from "../../data/site";
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="Предзаказ товара из США" description="Предзаказ любого beauty-товара из США через Telegram-бот Beauty Supply. Пришлите ссылку, рассчитаем выкуп." canonical={canonicalUrl("/preorder/")}>
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="breadcrumbs"><a href={base}>Главная</a> / <span>Предзаказ</span></div>
+      <h1 style="margin-top:16px;">Предзаказ из США</h1>
+      <p style="color:#6b5a56; font-size:18px;">Не нашли нужный продукт в каталоге из 13 позиций? Привезём под заказ любой beauty-товар из США, если он доступен у проверенных ретейлеров.</p>
+
+      <div class="prose">
+        <h2>Как это работает</h2>
+        <ol>
+          <li>Пришлите ссылку или точное название товара в Telegram-бот.</li>
+          <li>Менеджер проверит наличие у ретейлера, свежесть партии и рассчитает итоговую стоимость.</li>
+          <li>Подтверждаете заказ — мы выкупаем и доставляем в Россию.</li>
+          <li>Ориентировочный срок предзаказа 14–21 день, точные сроки подтверждает менеджер.</li>
+        </ol>
+
+        <h2>Что можно заказать</h2>
+        <ul>
+          <li>Профессиональный уход IMAGE Skincare, IMAGE MD, и другие американские бренды</li>
+          <li>Декоративную косметику Charlotte Tilbury, Hourglass и др.</li>
+          <li>Нишевые и селективные средства, которые сложно найти в РФ</li>
+        </ul>
+
+        <h2>Что нужно прислать</h2>
+        <ul>
+          <li>Ссылку на товар (например, sephora.com, imageskincare.com, charlottetilbury.com, hourglasscosmetics.com)</li>
+          <li>Желаемый объём/оттенок</li>
+          <li>Комфортный бюджет</li>
+        </ul>
+      </div>
+
+      <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap;">
+        <a href={`${siteConfig.contacts.telegramBot}?start=preorder_usa`} target="_blank" rel="noopener noreferrer" class="btn btn--primary">Рассчитать предзаказ в Telegram</a>
+        <a href={`${base}catalog/`} class="btn btn--secondary">Каталог в наличии</a>
+      </div>
+
+      <div style="margin-top:24px; background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:16px; font-size:13px; color:#6b5a56;">
+        Не собираем телефоны и email на сайте. Весь диалог — в Telegram, где личность уже известна мессенджеру. Никаких PII в localStorage.
+      </div>
+    </div>
+  </section>
+</BaseLayout>

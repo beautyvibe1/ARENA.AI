@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { products } from "../../data/products";
+import ProductCard from "../../components/catalog/ProductCard.astro";
+import CatalogFilters from "../../components/interactive/CatalogFilters.astro";
+import { canonicalUrl } from "../../lib/seo";
+
+const title = "Каталог — 13 товаров";
+const description = "Полный каталог Beauty Supply: IMAGE Skincare, IMAGE MD, Charlotte Tilbury, Hourglass. Фильтры по бренду, категории и задаче. Snapshot цен 14.08.2026.";
+---
+<BaseLayout title={title} description={description} canonical={canonicalUrl("/catalog/")}>
+  <section class="section">
+    <div class="container">
+      <div class="breadcrumbs"><a href={import.meta.env.BASE_URL}>Главная</a> / <span>Каталог</span></div>
+      <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:end; flex-wrap:wrap; gap:16px;">
+        <div>
+          <h1>Каталог</h1>
+          <p style="color:#6b5a56; max-width:60ch;">В наличии {products.length} позиций — профессиональный уход и макияж, привезённый из США. Финальную цену и наличие подтверждает менеджер. Цены — snapshot на 14.08.2026.</p>
+        </div>
+        <div style="font-size:13px; color:#9a8b88;">Найдено: {products.length} товаров • snapshot 14.08.2026</div>
+      </div>
+
+      <div style="margin-top:24px;">
+        <CatalogFilters />
+      </div>
+
+      <div class="product-grid">
+        {products.map(p => <ProductCard product={p} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
