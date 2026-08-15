@@ -1,0 +1,29 @@
+{
+  "name": "beauty-supply",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Beauty Supply — premium editorial commerce catalog",
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0",
+    "build": "astro build",
+    "preview": "astro preview --host 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.astro,.js  || true",
+    "test": "vitest run --reporter=verbose",
+    "test:e2e": "playwright test",
+    "validate:content": "node scripts/validate-content.mjs",
+    "check:links": "node scripts/check-links.mjs"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "astro": "^4.15.0",
+    "@astrojs/sitemap": "^3.2.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0",
+    "@playwright/test": "^1.46.0"
+  },
+  "packageManager": "npm@10.9.0",
+  "engines": {
+    "node": ">=20"
+  }
+}

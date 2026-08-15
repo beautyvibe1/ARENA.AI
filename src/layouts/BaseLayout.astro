@@ -1,0 +1,154 @@
+---
+import "../styles/global.css";
+import { siteConfig } from "../data/site";
+import { canonicalUrl, ogImageUrl, buildTitle } from "../lib/seo";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+const { title, description, canonical, ogImage, noindex } = Astro.props;
+const pageTitle = buildTitle(title);
+const desc = description || siteConfig.description;
+const canon = canonical || canonicalUrl(Astro.url.pathname);
+const og = ogImage || ogImageUrl();
+const base = import.meta.env.BASE_URL;
+---
+<!doctype html>
+<html lang={siteConfig.lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canon} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canon} />
+    <meta property="og:image" content={og} />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={og} />
+
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
+
+    <!-- Fonts: system fallback + Google fonts with cyrillic subset if allowed, using display=swap -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap&subset=cyrillic" rel="stylesheet" />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">К содержимому</a>
+
+    <div class="announcement">
+      Доставка по всей России • Проверка оригинальности • <a href={`${base}catalog/`}>13 товаров в наличии (snapshot 14.08.2026)</a>
+    </div>
+
+    <header class="header" role="banner">
+      <div class="container header__inner">
+        <a href={`${base}`} class="logo" aria-label="Beauty Supply — на главную">BEAUTY <span>Supply</span></a>
+        <nav class="nav" aria-label="Основная">
+          <ul class="nav__links" id="nav-links">
+            <li><a href={`${base}`}>Главная</a></li>
+            <li><a href={`${base}catalog/`}>Каталог</a></li>
+            <li><a href={`${base}about/`}>О нас</a></li>
+            <li><a href={`${base}delivery/`}>Доставка</a></li>
+            <li><a href={`${base}reviews/`}>Отзывы</a></li>
+            <li><a href={`${base}contacts/`}>Контакты</a></li>
+          </ul>
+          <div class="nav__actions">
+            <a class="btn btn--secondary" href={`${base}preorder/`}>Предзаказ</a>
+            <a class="btn btn--primary" href={siteConfig.contacts.telegramBot} target="_blank" rel="noopener noreferrer">Telegram</a>
+            <button class="mobile-toggle" id="mobile-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Открыть меню">☰</button>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="footer" role="contentinfo">
+      <div class="container">
+        <div class="footer__grid">
+          <div>
+            <div class="logo" style="color: #fff; margin-bottom: 12px;">BEAUTY <span style="color: var(--color-blush)">Supply</span></div>
+            <p style="color: #d9c9c2; font-size: 14px; max-width: 36ch;">{siteConfig.description} Не маркетплейс — curated edit и beauty-консьерж. Проверка каждого товара.</p>
+            <p style="margin-top: 12px; font-size: 13px; color: #b8a9a6;">Проверка метрик: {siteConfig.trust.verifiedDate}</p>
+          </div>
+          <div>
+            <strong style="display:block; margin-bottom: 12px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;">Каталог</strong>
+            <ul style="list-style:none; padding:0; margin:0; display:grid; gap: 8px; font-size: 14px;">
+              <li><a href={`${base}catalog/`}>Все товары</a></li>
+              <li><a href={`${base}catalog/?brand=IMAGE%20Skincare`}>IMAGE Skincare</a></li>
+              <li><a href={`${base}catalog/?brand=Charlotte%20Tilbury`}>Charlotte Tilbury</a></li>
+              <li><a href={`${base}catalog/?brand=Hourglass`}>Hourglass</a></li>
+            </ul>
+          </div>
+          <div>
+            <strong style="display:block; margin-bottom: 12px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;">Компания</strong>
+            <ul style="list-style:none; padding:0; margin:0; display:grid; gap: 8px; font-size: 14px;">
+              <li><a href={`${base}about/`}>О нас</a></li>
+              <li><a href={`${base}delivery/`}>Доставка и оплата</a></li>
+              <li><a href={`${base}reviews/`}>Отзывы и Avito</a></li>
+              <li><a href={`${base}preorder/`}>Предзаказ из США</a></li>
+              <li><a href={`${base}contacts/`}>Контакты</a></li>
+            </ul>
+          </div>
+          <div>
+            <strong style="display:block; margin-bottom: 12px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;">Контакты</strong>
+            <ul style="list-style:none; padding:0; margin:0; display:grid; gap: 8px; font-size: 14px;">
+              <li><a href={siteConfig.contacts.telegramBot} target="_blank" rel="noopener noreferrer">Telegram-бот</a></li>
+              <li><a href={siteConfig.contacts.telegramChannel} target="_blank" rel="noopener noreferrer">Telegram-канал</a></li>
+              <li><a href={siteConfig.contacts.avitoProfile} target="_blank" rel="noopener noreferrer">Avito профиль (5,0 · 33 отзыва)</a></li>
+              <li><a href={`${base}legal/privacy/`}>Privacy Policy</a></li>
+              <li><a href={`${base}legal/returns/`}>Возврат и обмен</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer__bottom">
+          <span>© {new Date().getFullYear()} Beauty Supply — curated beauty edit из США. Все права защищены.</span>
+          <span>Сайт: {siteConfig.productionUrl} • snapshot цен 14.08.2026 • финальную цену подтверждает менеджер</span>
+        </div>
+      </div>
+    </footer>
+
+    <script is:inline>
+      // Mobile menu accessible
+      const btn = document.getElementById('mobile-toggle');
+      const links = document.getElementById('nav-links');
+      if (btn && links) {
+        btn.addEventListener('click', () => {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!expanded));
+          btn.setAttribute('aria-label', expanded ? 'Открыть меню' : 'Закрыть меню');
+          links.classList.toggle('is-open', !expanded);
+        });
+        // close on Escape or link click
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && links.classList.contains('is-open')) {
+            btn.setAttribute('aria-expanded', 'false');
+            links.classList.remove('is-open');
+            btn.focus();
+          }
+        });
+        links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+          links.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }));
+      }
+    </script>
+  </body>
+</html>

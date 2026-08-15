@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { canonicalUrl } from "../../lib/seo";
+import { siteConfig } from "../../data/site";
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="Контакты — только подтверждённые каналы" description="Контакты Beauty Supply: Telegram-бот, Telegram-канал и Avito профиль. Instagram требует проверки принадлежности, email не подтверждён." canonical={canonicalUrl("/contacts/")}>
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="breadcrumbs"><a href={base}>Главная</a> / <span>Контакты</span></div>
+      <h1 style="margin-top:16px;">Контакты</h1>
+      <p style="color:#6b5a56;">Мы публикуем только проверенные каналы. Ниже — актуальные способы связи.</p>
+
+      <div style="display:grid; gap:16px; margin-top:20px;">
+        <div style="background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:18px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div>
+            <strong>Telegram-бот (основной канал заказа)</strong>
+            <div style="font-size:13px; color:#6b5a56; margin-top:4px;">Подтверждение наличия, цены, оплаты и доставки. Уникальный start-payload для каждого товара.</div>
+            <div style="font-size:12px; color:#9a8b88; margin-top:4px;">{siteConfig.contacts.telegramBot}</div>
+          </div>
+          <a href={siteConfig.contacts.telegramBot} target="_blank" rel="noopener noreferrer" class="btn btn--primary">Открыть бот</a>
+        </div>
+
+        <div style="background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:18px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div>
+            <strong>Telegram-канал</strong>
+            <div style="font-size:13px; color:#6b5a56; margin-top:4px;">Новости, поступления, подборки.</div>
+            <div style="font-size:12px; color:#9a8b88; margin-top:4px;">{siteConfig.contacts.telegramChannel}</div>
+          </div>
+          <a href={siteConfig.contacts.telegramChannel} target="_blank" rel="noopener noreferrer" class="btn btn--secondary">Открыть канал</a>
+        </div>
+
+        <div style="background:#fff; border:1px solid var(--color-border); border-radius:12px; padding:18px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div>
+            <strong>Avito — официальный профиль</strong>
+            <div style="font-size:13px; color:#6b5a56; margin-top:4px;">Рейтинг 5,0 · 33 отзыва · на рынке с ноября 2011 · статус «Надёжный продавец».</div>
+            <div style="font-size:12px; color:#9a8b88; margin-top:4px;">{siteConfig.contacts.avitoProfile}</div>
+          </div>
+          <a href={siteConfig.contacts.avitoProfile} target="_blank" rel="noopener noreferrer" class="btn btn--secondary">Открыть Avito</a>
+        </div>
+
+        <div style="background:var(--color-ivory); border:1px dashed var(--color-border-strong); border-radius:12px; padding:18px;">
+          <strong>Instagram — требует проверки</strong>
+          <div style="font-size:13px; color:#6b5a56; margin-top:4px;">В источниках упоминается {siteConfig.contacts.instagram}, но мы не рекламируем его как основной до подтверждения принадлежности и работоспособности.</div>
+        </div>
+
+        <div style="background:#fff8f5; border:1px solid #f2d6cc; border-radius:12px; padding:18px;">
+          <strong>Email — не подтверждён</strong>
+          <div style="font-size:13px; color:#6b5a56; margin-top:4px;">support@beauty-supply.shop упоминался в старых версиях, но пока не считаем его подтверждённым. См. CONTENT_VERIFICATION.md — release blocker.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

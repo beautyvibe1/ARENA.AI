@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://beautyvibe1.github.io/ARENA.AI/sitemap.xml

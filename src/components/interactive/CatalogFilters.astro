@@ -1,0 +1,99 @@
+---
+import { categories, brands, goals } from "../../data/products";
+---
+<div class="filter-bar" role="search" aria-label="Фильтры каталога">
+  <input id="catalog-search" type="search" placeholder="Поиск: Pillow Talk, ретинол, SPF..." aria-label="Поиск по каталогу" />
+  <select id="filter-brand" aria-label="Фильтр по бренду">
+    <option value="">Все бренды</option>
+    {brands.map(b => <option value={b}>{b}</option>)}
+  </select>
+  <select id="filter-category" aria-label="Фильтр по категории">
+    <option value="">Все категории</option>
+    {categories.map(c => <option value={c.id}>{c.label} ({c.count})</option>)}
+  </select>
+  <select id="filter-goal" aria-label="Фильтр по задаче">
+    <option value="">Все задачи</option>
+    {goals.map(g => <option value={g.id}>{g.label}</option>)}
+  </select>
+  <button id="filter-reset" class="btn btn--secondary" type="button" style="min-height:44px;">Сбросить</button>
+  <span id="filter-count" aria-live="polite" style="margin-left:auto; font-size:13px; color:#6b5a56;"></span>
+</div>
+<div id="empty-state" style="display:none; grid-column:1/-1; padding:24px; background:#fff; border:1px dashed #d6c6b8; border-radius:12px; text-align:center;">
+  <p>Ничего не найдено. Попробуйте изменить фильтры.</p>
+  <button class="btn btn--secondary" id="empty-reset" type="button">Сбросить фильтры</button>
+</div>
+
+<script is:inline>
+  (function(){
+    var search = document.getElementById('catalog-search');
+    var brand = document.getElementById('filter-brand');
+    var cat = document.getElementById('filter-category');
+    var goal = document.getElementById('filter-goal');
+    var reset = document.getElementById('filter-reset');
+    var count = document.getElementById('filter-count');
+    var empty = document.getElementById('empty-state');
+    var emptyReset = document.getElementById('empty-reset');
+    var cards = Array.from(document.querySelectorAll('[data-brand]'));
+
+    function getParams(){
+      var url = new URL(window.location.href);
+      return {
+        q: (url.searchParams.get('q') || '').toLowerCase(),
+        brand: url.searchParams.get('brand') || '',
+        category: url.searchParams.get('category') || '',
+        goal: url.searchParams.get('goal') || ''
+      };
+    }
+    function setParams(state){
+      var url = new URL(window.location.href);
+      if (state.q) url.searchParams.set('q', state.q); else url.searchParams.delete('q');
+      if (state.brand) url.searchParams.set('brand', state.brand); else url.searchParams.delete('brand');
+      if (state.category) url.searchParams.set('category', state.category); else url.searchParams.delete('category');
+      if (state.goal) url.searchParams.set('goal', state.goal); else url.searchParams.delete('goal');
+      history.replaceState(null,'', url.toString());
+    }
+
+    function apply(){
+      var q = (search.value || '').toLowerCase().trim();
+      var b = brand.value;
+      var c = cat.value;
+      var g = goal.value;
+      var visible = 0;
+      cards.forEach(function(card){
+        var text = card.textContent.toLowerCase();
+        var matchesQ = !q || text.indexOf(q) !== -1;
+        var matchesBrand = !b || card.getAttribute('data-brand') === b;
+        var matchesCat = !c || card.getAttribute('data-category') === c;
+        var goalsAttr = (card.getAttribute('data-goals')||'');
+        var matchesGoal = !g || goalsAttr.indexOf(g) !== -1;
+        var show = matchesQ && matchesBrand && matchesCat && matchesGoal;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      count.textContent = visible + ' из ' + cards.length;
+      if (empty) empty.style.display = visible===0 ? 'block' : 'none';
+      setParams({q:q,brand:b,category:c,goal:g});
+    }
+
+    var init = getParams();
+    if (init.q) search.value = init.q;
+    if (init.brand) brand.value = init.brand;
+    if (init.category) cat.value = init.category;
+    if (init.goal) goal.value = init.goal;
+
+    [search, brand, cat, goal].forEach(function(el){
+      el.addEventListener('input', apply);
+      el.addEventListener('change', apply);
+    });
+    reset.addEventListener('click', function(){
+      search.value=''; brand.value=''; cat.value=''; goal.value='';
+      apply();
+    });
+    if (emptyReset) emptyReset.addEventListener('click', function(){
+      search.value=''; brand.value=''; cat.value=''; goal.value='';
+      apply();
+    });
+
+    apply();
+  })();
+</script>

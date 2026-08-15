@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { canonicalUrl } from "../lib/seo";
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="Страница не найдена" description="404 — страница не найдена в Beauty Supply. Вернитесь в каталог или на главную." canonical={canonicalUrl("/404/")} noindex>
+  <section class="section" style="text-align:center;">
+    <div class="container container--narrow">
+      <h1>404 — не найдено</h1>
+      <p style="color:#6b5a56;">Страница не существует или была перемещена. Проверьте адрес или перейдите в каталог.</p>
+      <div style="display:flex; gap:12px; justify-content:center; margin-top:24px;">
+        <a href={base} class="btn btn--secondary">На главную</a>
+        <a href={`${base}catalog/`} class="btn btn--primary">В каталог (13 товаров)</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

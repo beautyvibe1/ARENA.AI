@@ -1,0 +1,64 @@
+---
+import { products } from "../../data/products";
+---
+<section class="concierge" aria-labelledby="quiz-title">
+  <h3 id="quiz-title">Бесплатный beauty-подбор без навязывания</h3>
+  <p style="color:#6b5a56; margin-bottom:16px;">Ответьте на 2 вопроса — соберём shortlist из 2–3 средств под вашу задачу и бюджет. Личные контакты не сохраняем.</p>
+  <form id="quiz-form" class="concierge__form" novalidate>
+    <div>
+      <label for="quiz-concern">Что хотите улучшить?</label>
+      <select id="quiz-concern" required>
+        <option value="">Выберите задачу</option>
+        <option value="lifting">Лифтинг, упругость</option>
+        <option value="glow">Сияние, ровный тон</option>
+        <option value="hydration">Увлажнение, сухость</option>
+        <option value="anti-age">Anti-age, морщины</option>
+        <option value="spf">SPF и защита</option>
+        <option value="contour">Контуринг, макияж</option>
+      </select>
+    </div>
+    <div>
+      <label for="quiz-budget">Комфортный бюджет</label>
+      <select id="quiz-budget" required>
+        <option value="">Выберите бюджет</option>
+        <option value="low">до 5 000 ₽</option>
+        <option value="mid">5 000–9 000 ₽</option>
+        <option value="high">9 000+ ₽</option>
+      </select>
+    </div>
+    <div>
+      <label for="quiz-product">Есть на примете товар? (необязательно)</label>
+      <select id="quiz-product">
+        <option value="">Нет, нужен подбор с нуля</option>
+        {products.map(p => <option value={p.slug}>{p.russianName}</option>)}
+      </select>
+    </div>
+    <button type="submit" class="btn btn--primary">Получить подбор в Telegram</button>
+    <p id="quiz-hint" style="font-size:12px; color:#9a8b88;" aria-live="polite"></p>
+  </form>
+</section>
+<script is:inline>
+  (function(){
+    var form = document.getElementById('quiz-form');
+    var concern = document.getElementById('quiz-concern');
+    var budget = document.getElementById('quiz-budget');
+    var prod = document.getElementById('quiz-product');
+    var hint = document.getElementById('quiz-hint');
+    if (!form) return;
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (!concern.value || !budget.value) {
+        hint.textContent = 'Пожалуйста, выберите задачу и бюджет.';
+        return;
+      }
+      var shortProd = prod.value ? prod.value.replace(/-/g,'_').slice(0,20) : '';
+      var token = 'quiz_' + concern.value + '_' + budget.value;
+      if (shortProd) token += '_' + shortProd;
+      token = token.replace(/[^A-Za-z0-9_-]/g,'_').slice(0,64);
+      var url = 'https://t.me/BEAUTYSUPPLYMSKBOT?start=' + encodeURIComponent(token);
+      hint.textContent = 'Открываем Telegram-бот с вашим подбором. Если бот не поддержит payload — просто нажмите Start и отправьте выбранные пункты.';
+      try { console.debug('[quiz_complete]', token); } catch {}
+      window.open(url, '_blank', 'noopener');
+    });
+  })();
+</script>
