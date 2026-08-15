@@ -53,9 +53,9 @@ Dev server слушает 0.0.0.0 для preview в Arena.
 
 ## CI/CD
 
-- `.github/workflows/ci.yml` — типы, проверка контента, unit-тесты, production build, ссылки и Playwright smoke-тесты.
-- `.github/workflows/pages.yml` — повторная верификация и deploy подписанного GitHub Pages artifact после push в `main`.
-- GitHub Pages настроен на GitHub Actions, HTTPS включён.
+- `npm run verify` — типы, проверка контента, unit-тесты, production build и проверка внутренних ссылок.
+- `npm run deploy:prepare` — полная верификация и обновление статического GitHub Pages artifact в `docs/`.
+- GitHub Pages публикует ветку `main`, каталог `/docs`; HTTPS включён.
 
 ## Контент-обновление
 
@@ -65,7 +65,11 @@ Dev server слушает 0.0.0.0 для preview в Arena.
 
 ## Deployment
 
-Push в `main` → Pages deploy. Пока custom domain не подтверждён, не создавать CNAME, сайт работает под `/ARENA.AI/`.
+1. Выполнить `npm run deploy:prepare`.
+2. Закоммитить обновлённый `docs/` и отправить изменения в `main`.
+3. GitHub Pages автоматически публикует `/docs` на `https://beautyvibe1.github.io/ARENA.AI/`.
+
+Пока custom domain не подтверждён, не создавать CNAME.
 
 ## Оставшиеся внешние blockers
 
