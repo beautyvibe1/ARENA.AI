@@ -13,7 +13,8 @@
     "test:e2e": "playwright test",
     "validate:content": "node scripts/validate-content.mjs",
     "check:links": "node scripts/check-links.mjs",
-    "verify": "npm run typecheck && npm run validate:content && npm test && npm run build && npm run check:links"
+    "verify": "npm run typecheck && npm run validate:content && npm test && npm run build && npm run check:links",
+    "deploy:prepare": "npm run verify && node scripts/prepare-pages.mjs"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
