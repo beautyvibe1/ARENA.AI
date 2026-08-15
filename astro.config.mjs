@@ -10,8 +10,14 @@ export default defineConfig({
     format: 'directory',
   },
   vite: {
+    server: {
+      allowedHosts: true,
+    },
+    preview: {
+      allowedHosts: true,
+    },
     css: {
       devSourcemap: true,
-    }
+    },
   }
 });

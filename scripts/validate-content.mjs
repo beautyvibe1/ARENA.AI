@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import path from 'node:path';
 
 const productsPath = 'src/data/products.ts';
 const content = fs.readFileSync(productsPath, 'utf8');

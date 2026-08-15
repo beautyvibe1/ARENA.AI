@@ -17,7 +17,6 @@ export function track(event: AnalyticsEvent) {
   // No-op until real counter ID provided
   // Keep console only in dev — avoid import.meta typing issues
   try {
-    // @ts-ignore
     if (typeof window !== "undefined" && window.location.hostname === "localhost") {
       console.debug("[analytics]", event.name, event.params);
     }
